@@ -1,52 +1,52 @@
 [
   {
     "id": 1,
-    "answer": "答え1",
-    "image": "/riddle_image/image1.svg"
+    "answer": "ごーるど",
+    "image": "/riddle_image/riddle_1.svg"
   },
   {
     "id": 2,
-    "answer": "答え2",
-    "image": "/riddle_image/image2.svg"
+    "answer": "めがね",
+    "image": "/riddle_image/riddle_2.svg"
   },
   {
     "id": 3,
-    "answer": "答え3",
-    "image": "/riddle_image/image3.svg"
+    "answer": "あね",
+    "image": "/riddle_image/riddle_3.svg"
   },
   {
     "id": 4,
-    "answer": "答え4",
-    "image": "/riddle_image/image4.svg"
+    "answer": "くろ",
+    "image": "/riddle_image/riddle_4.svg"
   },
   {
     "id": 5,
-    "answer": "答え5",
-    "image": "/riddle_image/image5.svg"
+    "answer": "いろ",
+    "image": "/riddle_image/riddle_5.svg"
   },
   {
     "id": 6,
     "answer": "答え6",
-    "image": "/riddle_image/image6.svg"
+    "image": "/riddle_image/riddle_6.svg"
   },
   {
     "id": 7,
     "answer": "答え7",
-    "image": "/riddle_image/image7.svg"
+    "image": "/riddle_image/riddle_7.svg"
   },
   {
     "id": 8,
     "answer": "答え8",
-    "image": "/riddle_image/image8.svg"
+    "image": "/riddle_image/riddle_8.svg"
   },
   {
     "id": 9,
     "answer": "答え9",
-    "image": "/riddle_image/image9.svg"
+    "image": "/riddle_image/riddle_9.svg"
   },
   {
     "id": 10,
     "answer": "答え10",
-    "image": "/riddle_image/image10.svg"
+    "image": "/riddle_image/riddle_10.svg"
   }
 ]
