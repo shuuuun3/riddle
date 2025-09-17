@@ -3,13 +3,50 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./page.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "./supabaseClient";
+
+
+function formatTime(sec: number) {
+  const m = Math.floor(sec / 60).toString().padStart(2, "0");
+  const s = (sec % 60).toString().padStart(2, "0");
+  return `${m}分${s}秒`;
+}
 
 export default function Home() {
   const [selected, setSelected] = useState("solo");
   const [inputValue, setInputValue] = useState("");
+  const [ranking, setRanking] = useState<{ name: string; time: number }[]>([]);
+  const [tagRanking, setTagRanking] = useState<{ name: string; time: number }[]>([]);
   const router = useRouter();
+
+  useEffect(() => {
+    async function fetchRanking() {
+      const { data, error } = await supabase
+        .from("riddle_ta_result")
+        .select("name, time")
+        .eq("mode", "solo")
+        .order("time", { ascending: true })
+        .limit(3);
+      if (!error && data) {
+        setRanking(data);
+      }
+    }
+    async function fetchTagRanking() {
+      const { data, error } = await supabase
+        .from("riddle_ta_result")
+        .select("name, time")
+        .eq("mode", "tag")
+        .order("time", { ascending: true })
+        .limit(3);
+      if (!error && data) {
+        setTagRanking(data);
+      }
+    }
+    fetchRanking();
+    fetchTagRanking();
+  }, []);
 
   const handleSelect = (value: "solo" | "tag") => {
     setSelected(value);
@@ -27,6 +64,20 @@ export default function Home() {
 
   return (
     <div className={styles.wrapper}>
+      <div className={styles.ranking}>
+        <h1>ソロ部門</h1>
+        <div className={styles.ranking_container}>
+          {ranking.map((person, i) => (
+            <div className={styles.person} key={i}>
+              <div className={styles.profile}>
+                <Image src="/crown.svg" alt="Crown" width={50} height={50} className={styles[`crown${i+1}`]} />
+                <p>{person.name}</p>
+              </div>
+              <p className={styles.time}>{formatTime(person.time)}</p>
+            </div>
+          ))}
+        </div>
+      </div>
       <div className={styles.container}>
         <p>2025年度</p>
         <p>高槻りどる高校入学試験問題</p>
@@ -69,6 +120,20 @@ export default function Home() {
 
         <div className={styles.start_button} onClick={() => {handleStart()}}>
           スタート
+        </div>
+      </div>
+      <div className={styles.ranking}>
+        <h1>タッグ部門</h1>
+        <div className={styles.ranking_container}>
+          {tagRanking.map((person, i) => (
+            <div className={styles.person} key={i}>
+              <div className={styles.profile}>
+                <Image src="/crown.svg" alt="Crown" width={50} height={50} className={styles[`crown${i+1}`]} />
+                <p>{person.name}</p>
+              </div>
+              <p className={styles.time}>{formatTime(person.time)}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>

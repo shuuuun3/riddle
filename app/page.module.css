@@ -1,22 +1,21 @@
 .wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 20vw 60vw 20vw;
   width: 100vw;
   height: 100vh;
+  font-family: var(--mincho);
+  color: white;
+  background-color: #3b3b3b;
 
   .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 0 20rem;
     height: 100%;
-    box-shadow: black 0px 0px 10px;
-    border: 1px solid black;
 
     .title {
-      font-size: 3rem;
+      font-size: 4rem;
       margin-bottom: 1rem;
     }
 
@@ -34,16 +33,20 @@
       .content {
         padding: 1rem 2rem;
         color: black;
-        background-color: #f0f0f0;
-        border-radius: 5px;
+        border: 1px solid white;
+        border-radius: 50px;
+        color: white;
+        font-size: 2rem;
+        transition: all 0.3s;
 
-        &:hover {
-          background-color: #f0f0f0;
-        }
+        /* &:hover {
+
+        } */
 
         &.selected {
-          background-color: #f5baba;
-          border: none;
+          color: black;
+          border: 1px solid rgb(0, 0, 0);
+          background-color: white;
         }
       }
     }
@@ -61,12 +64,17 @@
       input {
         width: 30vw;
         height: 3vw;
-        background-color: white;
+        background-color: transparent;
         border-radius: 50px;
-        border: 1px solid #ccc;
-        color: black;
+        border: 1px solid #ffffff;
+        color: rgb(255, 255, 255);
         font-size: 1.2rem;
         padding: 0 1rem;
+
+        &::placeholder {
+          font-family: var(--mincho);
+          color: #a1a1a1;
+        }
       }
     }
 
@@ -76,7 +84,7 @@
       background-color: #0070f3;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 20px;
       cursor: pointer;
       font-size: 1.5rem;
       transition: background-color 0.3s;
@@ -90,5 +98,65 @@
         background-color: #005bb5;
       }
     }
+  }
+
+  .ranking {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #222;
+    padding-top: 5rem;
+    gap: 2rem;
+    width: 20vw;
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .ranking_container {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      gap: 5rem;
+
+      .person {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        gap: 0.5rem;
+
+        .profile {
+          display: flex;
+          align-items: center;
+          gap: 0.8rem;
+
+          p {
+            font-size: 2rem;
+          }
+
+          img {
+            pointer-events: none;
+            user-select: none;
+
+            &.crown1 {
+              filter: invert(87%) sepia(89%) saturate(1807%) hue-rotate(319deg) brightness(87%) contrast(80%);
+            }
+            &.crown2 {
+              filter: invert(100%) sepia(93%) saturate(744%) hue-rotate(177deg) brightness(83%) contrast(92%);
+            }
+            &.crown3 {
+              filter: invert(46%) sepia(44%) saturate(687%) hue-rotate(347deg) brightness(94%) contrast(90%);
+            }
+          }
+        }
+
+        .time {
+          margin-left: 4.5rem;
+          font-size: 2rem;
+        }
+      }
+    }
+
   }
 }

@@ -4,16 +4,18 @@ import styles from './page.module.css'
 import { useGameContext } from "../GameContext";
 import { supabase } from "../supabaseClient";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 
 export default function Result() {
-    
+
     const { timer, team, reset } = useGameContext();
     const router = useRouter();
 
     // SSR/CSRの値不一致を防ぐため初期値は空文字列
     const [teamValue, setTeamValue] = useState("");
     const [modeValue, setModeValue] = useState("");
+
+    const postedRef = useRef(false);
 
     useEffect(() => {
         setTeamValue(team || (typeof window !== "undefined" ? window.localStorage.getItem("name") || "" : ""));
@@ -22,7 +24,8 @@ export default function Result() {
 
     // resultページ初回表示時にSupabaseへPOST（値取得後）
     useEffect(() => {
-        if (!teamValue || !modeValue) return;
+        if (!teamValue || !modeValue || postedRef.current) return;
+        postedRef.current = true; // 一度だけPOST
         const postResult = async () => {
             await supabase.from("riddle_ta_result").insert({
                 name: teamValue,
@@ -47,16 +50,8 @@ export default function Result() {
     };
 
     return (
-        <div className={styles.result_wrapper}>
-            <div className={styles.result_card}>
-                <h2 className={styles.result_title}>結果</h2>
-                <div className={styles.result_info}>
-                    <div className={styles.result_row}><span className={styles.label}>タイム</span><span className={styles.value}>{formatTime(timer)}</span></div>
-                    <div className={styles.result_row}><span className={styles.label}>チーム名</span><span className={styles.value}>{teamValue}</span></div>
-                    <div className={styles.result_row}><span className={styles.label}>モード</span><span className={styles.value}>{modeValue}</span></div>
-                </div>
-                <button className={styles.reset_btn} onClick={handleReset}>リセット</button>
-            </div>
+        <div className={styles.wrapper}>
+
         </div>
     );
 }
