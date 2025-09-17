@@ -1,3 +1,8 @@
+/* 分・秒のフォントサイズ調整 */
+.timeUnit {
+  font-size: 1.2rem;
+  vertical-align: bottom;
+}
 .wrapper {
   display: grid;
   grid-template-columns: 20vw 60vw 20vw;

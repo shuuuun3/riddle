@@ -98,7 +98,7 @@ export default function Result() {
                         <div className={styles.content}>
                             <h2>RANK</h2>
                             <div className={styles.line}></div>
-                            <p>{rank && total ? `${rank}` : "--"}<span className={styles.totalNumber}>{rank && total ? `/${total}` : ""}</span></p>
+                            <p>{rank !== null && total !== null ? `${rank}` : "--"}<span className={styles.totalNumber}>{rank !== null && total !== null ? `/${total}` : ""}</span></p>
                         </div>
                     </div>
                 </div>

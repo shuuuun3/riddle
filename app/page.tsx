@@ -11,7 +11,14 @@ import { supabase } from "./supabaseClient";
 function formatTime(sec: number) {
   const m = Math.floor(sec / 60).toString().padStart(2, "0");
   const s = (sec % 60).toString().padStart(2, "0");
-  return `${m}分${s}秒`;
+  return (
+    <>
+      {m}
+      <span className={styles.timeUnit}>分</span>
+      {s}
+      <span className={styles.timeUnit}>秒</span>
+    </>
+  );
 }
 
 export default function Home() {
