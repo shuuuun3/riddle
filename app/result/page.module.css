@@ -1,0 +1,67 @@
+/* resultページ用スタイル */
+.result_wrapper {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #f7f7fa;
+}
+
+.result_card {
+	background: #fff;
+	border-radius: 16px;
+	box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+	padding: 40px 32px 32px 32px;
+	min-width: 320px;
+	max-width: 400px;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.result_title {
+	font-size: 2rem;
+	font-weight: bold;
+	margin-bottom: 32px;
+	color: #333;
+}
+
+.result_info {
+	width: 100%;
+	margin-bottom: 32px;
+}
+
+.result_row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 1.2rem;
+	margin-bottom: 16px;
+}
+
+.label {
+	color: #666;
+	font-weight: 500;
+}
+
+.value {
+	color: #222;
+	font-weight: bold;
+}
+
+.reset_btn {
+	background: #ff5252;
+	color: #fff;
+	border: none;
+	border-radius: 8px;
+	padding: 12px 32px;
+	font-size: 1.1rem;
+	font-weight: bold;
+	cursor: pointer;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+	transition: background 0.2s;
+}
+.reset_btn:hover {
+	background: #e53935;
+}

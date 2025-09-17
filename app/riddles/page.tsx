@@ -1,6 +1,8 @@
 'use client';
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { useGameContext } from "../GameContext";
+import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 
 type Riddle = {
@@ -21,15 +23,19 @@ export default function Riddles() {
   const [riddles, setRiddles] = useState<Riddle[]>([]);
   const [current, setCurrent] = useState(0);
   const [input, setInput] = useState("");
-  const [timer, setTimer] = useState(0);
   const [isActive, setIsActive] = useState(false);
+  const [team, setTeam] = useState(() => (typeof window !== "undefined" ? window.localStorage.getItem("name") || "" : ""));
+  const [department, setDepartment] = useState("");
+  const [mode, setMode] = useState(() => (typeof window !== "undefined" ? window.localStorage.getItem("mode") || "solo" : "solo"));
+  const { setTimer, setTeam: setTeamCtx, setDepartment: setDepartmentCtx, timer } = useGameContext();
+  const [localTimer, setLocalTimer] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
     fetch("/data/riddle.json")
       .then(res => res.json())
       .then(data => setRiddles(data));
-    setIsActive(true); // ページ表示時にタイマー開始
-
+  setIsActive(true); // ページ表示時にタイマー開始
     // F5やCtrl+Rなどのリロードをブロック
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "F5" || (e.ctrlKey && e.key.toLowerCase() === "r")) {
@@ -59,13 +65,18 @@ export default function Riddles() {
     let interval: NodeJS.Timeout | undefined;
     if (isActive) {
       interval = setInterval(() => {
-        setTimer(prev => prev + 1);
+        setLocalTimer(prev => prev + 1);
       }, 1000);
     }
     return () => {
       if (interval) clearInterval(interval);
     };
   }, [isActive]);
+
+  // localTimerが変化したらContextにも反映
+  useEffect(() => {
+    setTimer(localTimer);
+  }, [localTimer, setTimer]);
 
 
 
@@ -86,8 +97,22 @@ export default function Riddles() {
     }, 100);
   }, []);
 
+  // currentがriddles.lengthになったらuseEffectで遷移・値保存
+  useEffect(() => {
+    if (riddles.length > 0 && current >= riddles.length) {
+      if (typeof window !== "undefined") {
+        // teamやmodeが空欄の場合はlocalStorageの値を維持
+        if (team) window.localStorage.setItem("name", team);
+        if (mode) window.localStorage.setItem("mode", mode);
+      }
+      router.push("/result");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current, riddles.length]);
+
+  // すべてのHooksの後で条件分岐return
   if (riddles.length === 0) return <div>Loading...</div>;
-  if (current >= riddles.length) return <div>クリア！</div>;
+  if (current >= riddles.length) return null;
 
   // タイマー表示用関数
   function formatTime(sec: number) {
@@ -98,8 +123,42 @@ export default function Riddles() {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.timer}>{formatTime(timer)}</div>
+      {/* デバッグ用: 全問正解ボタン（不要になったら削除） */}
+      <div style={{ width: "100%", display: "flex", justifyContent: "center", margin: "32px 0 16px 0" }}>
+        <button
+          onClick={() => {
+            if (typeof window !== "undefined") {
+              if (team) window.localStorage.setItem("name", team);
+              if (mode) window.localStorage.setItem("mode", mode);
+            }
+            setCurrent(riddles.length);
+          }}
+          style={{
+            fontSize: "1.5rem",
+            padding: "16px 32px",
+            background: "#ff5252",
+            zIndex: 10,
+          }}
+        >
+          デバッグ: 全問正解
+        </button>
+      </div>
+      <div className={styles.timer}>{formatTime(localTimer)}</div>
       <div className={styles.container}>
+        <div className={styles.input_group}>
+          <input
+            type="text"
+            value={team}
+            onChange={e => setTeam(e.target.value)}
+            placeholder="チーム名"
+          />
+          <input
+            type="text"
+            value={department}
+            onChange={e => setDepartment(e.target.value)}
+            placeholder="部門名"
+          />
+        </div>
         <p className={styles.question_number}>問{riddles[current].id}</p>
         <div className={styles.img}>
           <Image
