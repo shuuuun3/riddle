@@ -78,6 +78,7 @@ export default function Home() {
           ))}
         </div>
       </div>
+
       <div className={styles.container}>
         <p>2025年度</p>
         <p>高槻りどる高校入学試験問題</p>
@@ -111,10 +112,11 @@ export default function Home() {
         <div className={styles.input_area}>
           <input
             type="text"
-            placeholder="チーム名を入力してください"
+            placeholder="チーム名を入力（8文字以内）"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             style={{ paddingLeft: "1rem" }}
+            maxLength={8}
           />
         </div>
 
@@ -122,6 +124,7 @@ export default function Home() {
           スタート
         </div>
       </div>
+
       <div className={styles.ranking}>
         <h1>タッグ部門</h1>
         <div className={styles.ranking_container}>

@@ -164,8 +164,8 @@ export default function Riddles() {
           <Image
             src={riddles[current].image}
             alt={`riddle${riddles[current].id}`}
-            width={980}
-            height={700}
+            width={875}
+            height={625}
           />
         </div>
         <input
