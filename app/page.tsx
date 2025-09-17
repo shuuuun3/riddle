@@ -91,6 +91,8 @@ export default function Home() {
         <p>高槻りどる高校入学試験問題</p>
         <p>一般</p>
         <h1 className={styles.title}>タイムアタック謎解き</h1>
+        <h2>※回答はすべて<span>ひらがな</span>で入力してください。<br/>
+        　Enter(エンター)を押さないと次の問題に進みません。</h2>
         <div className={styles.selector}>
           <div
             className={
