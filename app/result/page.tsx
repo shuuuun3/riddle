@@ -86,7 +86,15 @@ export default function Result() {
                 </div>
                 <div className={styles.detail}>
                     <div className={styles.title}>
-                        <h1 className={styles.mode}>{modeValue === "solo" ? "ソロ" : modeValue === "tag" ? "タッグ" : modeValue}<span> 部門</span></h1>
+                        <h1 className={styles.mode}
+                            style={
+                                modeValue === "solo"
+                                    ? { color: "#ff5757" }
+                                    : modeValue === "tag"
+                                    ? { color: "#50b0ff" }
+                                    : { color: "white" }
+                            }
+                        >{modeValue === "solo" ? "ソロ" : modeValue === "tag" ? "タッグ" : modeValue}<span className={styles.department}> 部門</span></h1>
                         <h2>タイムアタック謎解き</h2>
                         <p><span>■</span> RESULT</p>
                     </div>
