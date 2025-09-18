@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "answer": "てすと",
+    "image": "/riddle_image_test/riddle_test1.svg"
+  },
+  {
+    "id": 2,
+    "answer": "がんばれ",
+    "image": "/riddle_image_test/riddle_test2.svg"
+  }
+]

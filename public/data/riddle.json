@@ -26,27 +26,52 @@
   },
   {
     "id": 6,
-    "answer": "答え6",
+    "answer": "きりん",
     "image": "/riddle_image/riddle_6.svg"
   },
   {
     "id": 7,
-    "answer": "答え7",
+    "answer": "いるか",
     "image": "/riddle_image/riddle_7.svg"
   },
   {
     "id": 8,
-    "answer": "答え8",
+    "answer": "きつつき",
     "image": "/riddle_image/riddle_8.svg"
   },
   {
     "id": 9,
-    "answer": "答え9",
+    "answer": "いご",
     "image": "/riddle_image/riddle_9.svg"
   },
   {
     "id": 10,
-    "answer": "答え10",
+    "answer": "りすと",
     "image": "/riddle_image/riddle_10.svg"
+  },
+  {
+    "id": 11,
+    "answer": "ないす",
+    "image": "/riddle_image/riddle_11.svg"
+  },
+  {
+    "id": 12,
+    "answer": "みらー",
+    "image": "/riddle_image/riddle_12.svg"
+  },
+  {
+    "id": 13,
+    "answer": "かき",
+    "image": "/riddle_image/riddle_13.svg"
+  },
+  {
+    "id": 14,
+    "answer": "ちーず",
+    "image": "/riddle_image/riddle_14.svg"
+  },
+  {
+    "id": 15,
+    "answer": "あうと",
+    "image": "/riddle_image/riddle_15.svg"
   }
 ]

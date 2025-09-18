@@ -31,7 +31,7 @@ export default function Riddles() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch("/data/riddle.json")
+    fetch("/data/riddle_test.json")
       .then(res => res.json())
       .then(data => setRiddles(data));
   setIsActive(true); // ページ表示時にタイマー開始
@@ -97,21 +97,40 @@ export default function Riddles() {
   }, []);
 
   // currentがriddles.lengthになったらuseEffectで遷移・値保存
-  useEffect(() => {
-    if (riddles.length > 0 && current >= riddles.length) {
-      if (typeof window !== "undefined") {
-        // teamやmodeが空欄の場合はlocalStorageの値を維持
-        if (team) window.localStorage.setItem("name", team);
-        if (mode) window.localStorage.setItem("mode", mode);
+  const isClear = current >= riddles.length;
+    useEffect(() => {
+      if (isClear) {
+        const timer = setTimeout(() => {
+          router.push("/");
+        }, 1000);
+        return () => clearTimeout(timer);
       }
-      router.push("/result");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current, riddles.length]);
+    }, [isClear, router]);
 
   // すべてのHooksの後で条件分岐return
+  // 2重宣言を削除
+
+  // 不要な即時遷移useEffectは削除
+
   if (riddles.length === 0) return <div>Loading...</div>;
-  if (current >= riddles.length) return null;
+  if (isClear) {
+    return (
+      <div style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "#3b3b3b",
+        fontSize: "5rem",
+        fontWeight: "bold",
+        color: "#ff5252",
+        zIndex: 9999
+      }}>
+        クリア
+      </div>
+    );
+  }
 
   // タイマー表示用関数
   function formatTime(sec: number) {
@@ -122,26 +141,6 @@ export default function Riddles() {
 
   return (
     <div className={styles.wrapper}>
-      {/* デバッグ用: 全問正解ボタン（不要になったら削除） */}
-      {/* <div style={{ width: "100%", display: "flex", justifyContent: "center", margin: "32px 0 16px 0" }}>
-        <button
-          onClick={() => {
-            if (typeof window !== "undefined") {
-              if (team) window.localStorage.setItem("name", team);
-              if (mode) window.localStorage.setItem("mode", mode);
-            }
-            setCurrent(riddles.length);
-          }}
-          style={{
-            fontSize: "1.5rem",
-            padding: "16px 32px",
-            background: "#ff5252",
-            zIndex: 10,
-          }}
-        >
-          デバッグ: 全問正解
-        </button>
-      </div> */}
       <div className={styles.timer}>{formatTime(localTimer)}</div>
       <div className={styles.container}>
         <div className={styles.input_group}>

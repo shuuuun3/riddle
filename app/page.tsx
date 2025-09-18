@@ -71,6 +71,9 @@ export default function Home() {
 
   return (
     <div className={styles.wrapper}>
+
+      <div className={styles.testButton} onClick={() => router.push("/riddles_test")}>お試し</div>
+
       <div className={styles.ranking}>
         <h1>ソロ部門</h1>
         <div className={styles.ranking_container}>
