@@ -15,17 +15,24 @@ export default function Result() {
     const [modeValue, setModeValue] = useState("");
     const [rank, setRank] = useState<number | null>(null);
     const [total, setTotal] = useState<number | null>(null);
+    const [solved, setSolved] = useState<string>("");
 
     const postedRef = useRef(false);
 
     useEffect(() => {
         setTeamValue(team || (typeof window !== "undefined" ? window.localStorage.getItem("name") || "" : ""));
         setModeValue(typeof window !== "undefined" ? window.localStorage.getItem("mode") || "normal" : "normal");
+        setSolved(typeof window !== "undefined" ? window.localStorage.getItem("solved") || "" : "");
+        setTotal(15);
     }, [team]);
+
+    // 15分強制終了判定
+    const isTimeout = typeof window !== "undefined" && window.localStorage.getItem("timeout") === "1";
 
     // resultページ初回表示時にSupabaseへPOST（値取得後）
     useEffect(() => {
-        if (!teamValue || !modeValue || postedRef.current) return;
+        const isTimeout = typeof window !== "undefined" && window.localStorage.getItem("timeout") === "1";
+        if (!teamValue || !modeValue || postedRef.current || isTimeout) return;
         postedRef.current = true; // 一度だけPOST
         const postResult = async () => {
             await supabase.from("riddle_ta_result").insert({
@@ -50,7 +57,6 @@ export default function Result() {
                 .order("time", { ascending: true });
             if (!error && data) {
                 setTotal(data.length);
-                // 自分の記録の順位（同タイムは上位扱い）
                 const sorted = data.sort((a, b) => a.time - b.time);
                 const idx = sorted.findIndex(
                     (row) => row.name === teamValue && row.time === timer
@@ -74,11 +80,9 @@ export default function Result() {
 
     return (
         <div className={styles.wrapper}>
-
             <div className={styles.reset} onClick={handleReset}>
                 next
             </div>
-
             <div className={styles.container}>
                 <div className={styles.name}>
                     <p>NAME</p>
@@ -95,19 +99,26 @@ export default function Result() {
                                     : { color: "white" }
                             }
                         >{modeValue === "solo" ? "ソロ" : modeValue === "tag" ? "タッグ" : modeValue}<span className={styles.department}> 部門</span></h1>
-                        <h2>タイムアタック謎解き</h2>
-                        <p><span>■</span> RESULT</p>
+                        <div>
+                            <h2>タイムアタック謎解き</h2>
+                            <p><span>■</span> RESULT</p>
+                        </div>
                     </div>
                     <div className={styles.result}>
                         <div className={styles.content}>
                             <h2>SCORE</h2>
                             <div className={styles.line}></div>
-                            <p>{formatTime(timer)}</p>
+                            <p>
+                                {isTimeout
+                                    ? `${solved}/`
+                                    : (solved && total ? `${solved}/` : formatTime(timer))}
+                                <span className={styles.totalNumber}>{isTimeout ? "15" : (solved && total ? "15" : "")}</span>
+                            </p>
                         </div>
                         <div className={styles.content}>
                             <h2>RANK</h2>
                             <div className={styles.line}></div>
-                            <p>{rank !== null && total !== null ? `${rank}` : "--"}<span className={styles.totalNumber}>{rank !== null && total !== null ? `/${total}` : ""}</span></p>
+                            <p>{isTimeout ? "--" : (rank !== null && total !== null ? `${rank}` : "--")}<span className={styles.totalNumber}>{isTimeout ? "" : (rank !== null && total !== null ? `/${total}` : "")}</span></p>
                         </div>
                     </div>
                 </div>

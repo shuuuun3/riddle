@@ -75,7 +75,30 @@ export default function Riddles() {
   // localTimerが変化したらContextにも反映
   useEffect(() => {
     setTimer(localTimer);
-  }, [localTimer, setTimer]);
+    // 15分（900秒）を超えたら強制終了
+    if (localTimer > 900) {
+      setIsActive(false); // タイマー停止
+      if (typeof window !== "undefined") {
+        if (team) window.localStorage.setItem("name", team);
+        if (mode) window.localStorage.setItem("mode", mode);
+        window.localStorage.setItem("solved", String(current));
+        window.localStorage.setItem("total", String(riddles.length));
+        window.localStorage.setItem("timeout", "1");
+      }
+      router.push("/result");
+    }
+    // 15分未満で全問正解時も保存
+    if (riddles.length > 0 && current >= riddles.length) {
+      if (typeof window !== "undefined") {
+        if (team) window.localStorage.setItem("name", team);
+        if (mode) window.localStorage.setItem("mode", mode);
+        window.localStorage.setItem("solved", String(current));
+        window.localStorage.setItem("total", String(riddles.length));
+        window.localStorage.removeItem("timeout");
+      }
+      router.push("/result");
+    }
+  }, [localTimer, setTimer, current, riddles.length, team, mode, router]);
 
 
 
@@ -123,7 +146,7 @@ export default function Riddles() {
   return (
     <div className={styles.wrapper}>
       {/* デバッグ用: 全問正解ボタン（不要になったら削除） */}
-      {/* <div style={{ width: "100%", display: "flex", justifyContent: "center", margin: "32px 0 16px 0" }}>
+      {/* <div style={{ width: "100%", display: "flex", justifyContent: "center", margin: "32px 0 16px 0", gap: "16px" }}>
         <button
           onClick={() => {
             if (typeof window !== "undefined") {
@@ -140,6 +163,19 @@ export default function Riddles() {
           }}
         >
           デバッグ: 全問正解
+        </button>
+        <button
+          onClick={() => {
+            setLocalTimer(901);
+          }}
+          style={{
+            fontSize: "1.5rem",
+            padding: "16px 32px",
+            background: "#50b0ff",
+            zIndex: 10,
+          }}
+        >
+          デバッグ: タイマー15分強制終了
         </button>
       </div> */}
       <div className={styles.timer}>{formatTime(localTimer)}</div>
