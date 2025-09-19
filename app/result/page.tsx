@@ -56,6 +56,11 @@ export default function Result() {
                 .eq("mode", modeValue)
                 .order("time", { ascending: true });
             if (!error && data) {
+                if (data.length === 0) {
+                    setRank(1);
+                    setTotal(1);
+                    return;
+                }
                 setTotal(data.length);
                 const sorted = data.sort((a, b) => a.time - b.time);
                 const idx = sorted.findIndex(
@@ -109,10 +114,10 @@ export default function Result() {
                             <h2>SCORE</h2>
                             <div className={styles.line}></div>
                             <p>
+                                {/* 15分強制終了なら正解数のみ、15分以内完答ならタイマーのみ、それ以外は正解数のみ */}
                                 {isTimeout
-                                    ? `${solved}/`
-                                    : (solved && total ? `${solved}/` : formatTime(timer))}
-                                <span className={styles.totalNumber}>{isTimeout ? "15" : (solved && total ? "15" : "")}</span>
+                                    ? `${solved}/15`
+                                    : (Number(solved) === 15 ? formatTime(timer) : `${solved}/15`)}
                             </p>
                         </div>
                         <div className={styles.content}>
